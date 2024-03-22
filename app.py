@@ -75,7 +75,7 @@ while True:
                                     window['hora'].update(hora.strftime('%H:%M:%S'))
                                     cliente = values['cliente']
 
-                                    # CONEXÃO DE BANCO DE DADOS
+                                    # CONEXÃO DE BANCO DE DADOS DE VENDAS
                                     banco = sqlite3.connect('acai_database.db')
                                     cursor = banco.cursor()
                                     cursor.execute('CREATE TABLE IF NOT EXISTS VENDAS(ID integer, DATA text, HORA text, FORMA text, VALOR integer, CLIENTE text, USUARIO text)')
@@ -125,7 +125,7 @@ while True:
                                         else:
                                             sg.popup('VERIFIQUE SE DIGITOU: [1] ou [2]', font='Arial 15 bold', title='ERRO!')
 
-                                    if events == 'CONFIRMAR[F5]':
+                                    if events == 'CONFIRMAR':
                                         try:
                                             valorpago = values['valorpago'].replace(',', '.')
 
@@ -228,7 +228,8 @@ while True:
                                         except:
                                             sg.popup('CONFIRME O PAGAMENTO PRIMEIRO!', font='Arial 15 bold', title='ERRO!')
 
-                                    if events == 'CANCELAR PEDIDO[F7]':
+                                    # INICIA A JANELA DE CANCELAMENTO DE PEDIDOS
+                                    if events == 'CANCELAR PEDIDO':
                                         window['idproduto'].update('')
                                         window['saida'].update('')
                                         window['gramas'].update('')
@@ -248,25 +249,33 @@ while True:
                                                 break
                                             
                                             elif events == 'PROCURAR':
+                                                window['saidacancelar'].update('') 
                                                 banco = sqlite3.connect('acai_database.db')
-                                                cursor = banco.cursor()   
-                                                window['saidacancelar'].update('')              
-                                                
-                                                try:
-                                                    cursor.execute('SELECT ROWID, ID, FORMA, VALOR FROM VENDAS WHERE VALOR = {}'.format(values['valorcancelar'].replace(',', '.')))
-                                                    valores_db = cursor.fetchall()
-                                                    for valor_db in valores_db:
-                                                        if valor_db[1] == 1:
-                                                            print(f'Linha: {valor_db[0]} | {valor_db[1]}-AÇAÍ, Forma de Pagamento: {valor_db[2]}, Valor: {valor_db[3]}')
-                                                        
-                                                        elif valor_db[1] == 2:
-                                                            print(f'Linha: {valor_db[0]} | {valor_db[1]}-SORVETE, Forma de Pagamento: {valor_db[2]}, Valor: {valor_db[3]}')
-                                                        
-                                                        else:
-                                                            sg.popup(f"NÃO ENCONTRAMOS O VALOR DE: {values['valorcancelar']}", font='Arial 13 bold', title='ERRO!')
+                                                cursor = banco.cursor()
+                                                cursor.execute('SELECT * FROM VENDAS')
+                                                vendastotais = cursor.fetchall()
+                                                print('SEGUE RELATÓRIO COMPLETO DAS VENDAS\n')
+                                                for vendatt in vendastotais:
+                                                    print(f'Linha: {vendatt[0]} | DATA: {vendatt[1]} - {vendatt[2]}, FORMA DE PAGAMENTO: {vendatt[3]}, VALOR: R$ {vendatt[4]}\n')
+                                                      
 
-                                                except:
-                                                    sg.popup('DIGITE CORRETAMENTE.', font='Arial 13 bold', title='ERRO!')
+
+                                                
+#                                                try:
+#                                                    cursor.execute('SELECT ROWID, ID, FORMA, VALOR FROM VENDAS WHERE VALOR = {}'.format(values['valorcancelar'].replace(',', '.')))
+#                                                    valores_db = cursor.fetchall()
+#                                                    for valor_db in valores_db:
+#                                                        if valor_db[1] == 1:
+#                                                            print(f'Linha: {valor_db[0]} | {valor_db[1]}-AÇAÍ, Forma de Pagamento: {valor_db[2]}, Valor: {valor_db[3]}')
+#                                                        
+#                                                        elif valor_db[1] == 2:
+#                                                            print(f'Linha: {valor_db[0]} | {valor_db[1]}-SORVETE, Forma de Pagamento: {valor_db[2]}, Valor: {valor_db[3]}')
+#                                                        
+#                                                        else:
+#                                                            sg.popup(f"NÃO ENCONTRAMOS O VALOR DE: {values['valorcancelar']}", font='Arial 13 bold', title='ERRO!')
+
+#                                                except:
+#                                                    sg.popup('DIGITE CORRETAMENTE.', font='Arial 13 bold', title='ERRO!')
 
                                             elif events == 'CANCELAR':
                                                 try:
@@ -288,9 +297,20 @@ while True:
                                             elif events == 'VOLTAR':
                                                 criar_janela_prin()
                                                 window.close()        
-                                                break                   
+                                                break
+                                    
+                                    # INICIAR NOVO PEDIDO
+                                    if events == 'NOVO PEDIDO':
+                                        window['saida'].update('')
+                                        window['cliente'].update('')
+                                        window['idproduto'].update('')
+                                        window['gramas'].update('')
+                                        window['saidapedido'].update('0.00')
+                                        window['valorpago'].update('')
+                                        window['saidatroco'].update('0.00')
+                                        window['cliente'].set_focus()
 
-                                    # CANCELAR PEDIDO ESPECÍFICO SELECT VALOR DO PEDIDO
+                                    # MOSTRA OS RELATÓRIOS ESPECIFICOS E GERAL DE VENDAS
                                     if events == 'RELATÓRIO COMPLETO':
                                         window['saida'].update('')
                                         relatorio_completo()
@@ -303,6 +323,7 @@ while True:
                                         window['saida'].update('')
                                         relatorio_sorvete()
 
+                                    # MOSTRA INFORMAÇÕES RELEVANTES DO SISTEMA COM DICAS DE UTILIZAÇÃO
                                     if events == 'INFORMAÇÕES':
                                         print('*' * 102)
                                         print('Este sistema é destinado ao gerenciamento de vendas para empresa de \nGelatos')
@@ -343,40 +364,68 @@ while True:
                                                 break
 
                                             if events == 'ADD GELATO':
-                                                inserir_gelatos(gelatos, qntgelatos, valorgelatos)
-                                                sg.popup(f'Inserido com sucesso: {gelatos}, QNT: {qntgelatos}, Valor: {valorgelatos}')
+                                                try:
+                                                    if not gelatos == '':
+                                                        inserir_gelatos(gelatos, qntgelatos, valorgelatos)
+                                                        sg.popup(f'Inserido com sucesso: {gelatos}, QNT: {qntgelatos}, Valor: {valorgelatos}', font='Arial 13 bold', title='INFORMAÇÃO')
+                                                    else:
+                                                        sg.popup('Selecione um gelato.', font='Arial 13 bold', title='ERRO')
+                                                except:                                                    
+                                                    sg.popup('Algo deu errado. Tente novamente e verifique os campos de gelatos estão preenchidos.', font='Arial 13 bold', title='ERRO')
 
                                             if events == 'VER GELATOS':
-                                                window['mostrarproduto'].update('')
-                                                print('RELATÓRIO DOS GELATOS EM ESTOQUE:\n')
-                                                ver_gelatos()
+                                                try:
+                                                    window['mostrarproduto'].update('')
+                                                    print('RELATÓRIO DOS GELATOS EM ESTOQUE:\n')
+                                                    ver_gelatos()
+                                                except:
+                                                    sg.popup('Banco de dados está em branco, adicione algo para conseguir verificar.', font='Arial 13 bold', title='INFORMAÇÃO')
+
 
                                             if events == 'ADD UTILIDADE':
-                                                inserir_utilidades(utilidades, qntutilidades, valorutilidades)
-                                                sg.popup(f'Inserido com sucesso: {utilidades}, QNT: {qntutilidades}, Valor: {valorutilidades}')
+                                                try:
+                                                    if not utilidades == '':
+                                                        inserir_utilidades(utilidades, qntutilidades, valorutilidades)
+                                                        sg.popup(f'Inserido com sucesso: {utilidades}, QNT: {qntutilidades}, Valor: {valorutilidades}', font='Arial 13 bold', title='INFORMAÇÃO')
+                                                    else:
+                                                        sg.popup('Selecione uma utilidade.', font='Arial 13 bold', title='ERRO')
+                                                except:
+                                                    sg.popup('Algo deu errado. Tente novamente e verifique os campos de utilidades estão preenchidos.', font='Arial 13 bold', title='ERRO')
 
                                             if events == 'VER UTILIDADES':
-                                                window['mostrarproduto'].update('')
-                                                print('RELATÓRIO DAS UTILIDADES EM ESTOQUE:\n')
-                                                ver_utilidades()
+                                                try:
+                                                    window['mostrarproduto'].update('')
+                                                    print('RELATÓRIO DAS UTILIDADES EM ESTOQUE:\n')
+                                                    ver_utilidades()
+                                                except:
+                                                    sg.popup('Banco de dados está em branco, adicione algo para conseguir verificar.', font='Arial 13 bold', title='INFORMAÇÃO')
 
                                             if events == 'ADD FRUTA':
-                                                inserir_frutas(frutas, qntfrutas, valorfrutas)
-                                                sg.popup(f'Inserido com sucesso: {frutas}, QNT: {qntfrutas}, Valor: {valorfrutas}')
+                                                try:
+                                                    if not frutas == '':
+                                                        inserir_frutas(frutas, qntfrutas, valorfrutas)
+                                                        sg.popup(f'Inserido com sucesso: {frutas}, QNT: {qntfrutas}, Valor: {valorfrutas}', font='Arial 13 bold', title='INFORMAÇÃO')
+                                                    else:
+                                                        sg.popup('Selecione uma fruta.', font='Arial 13 bold', title='ERRO')
+                                                except:
+                                                    sg.popup('Algo deu errado. Tente novamente e verifique os campos de frutas estão preenchidos.', font='Arial 13 bold', title='ERRO')
 
                                             if events == 'VER FRUTAS':
-                                                window['mostrarproduto'].update('')
-                                                print('RELATÓRIO DAS FRUTAS EM ESTOQUE:\n')
-                                                ver_frutas()
+                                                try:
+                                                    window['mostrarproduto'].update('')
+                                                    print('RELATÓRIO DAS FRUTAS EM ESTOQUE:\n')
+                                                    ver_frutas()
+                                                except:
+                                                    sg.popup('Banco de Dados está em Branco, adicione algo para conseguir verificar.', font='Arial 13 bold', title='INFORMAÇÃO')
 
                             else:
-                                sg.popup('A DATA NÃO PODE SER DIFERENTE DE HOJE E O SUPRIMENTO DEVE SER NO MÍNIMO R$100 (cem reais).', font='Arial 14 bold', title='ERRO!')
+                                sg.popup('A DATA NÃO PODE SER DIFERENTE DE HOJE E O SUPRIMENTO DEVE SER NO MÍNIMO R$100 (cem reais).', font='Arial 14 bold', title='ERRO INICIAL!')
 
                         else:
-                            sg.popup('PREENCHA TODOS OS CAMPOS CORRETAMENTE', font='Arial 13 bold', title='ERRO!')                
+                            sg.popup('PREENCHA TODOS OS CAMPOS CORRETAMENTE', font='Arial 13 bold', title='ERRO DE PREENCHIMENTO!')                
             
             else:
-                sg.popup(f"SENHA INCORRETA!", font='Arial 13 bold', title='ERRO!')
+                sg.popup(f"SENHA INCORRETA!", font='Arial 13 bold', title='ERRO DE SENHA!')
                  
         except:
-            sg.popup('VERIFIQUE SE DIGITOU CORRETAMENTE.', font='Arial 13 bold', title='ERRO!')
+            sg.popup('O programa está sendo finalizado.', font='Arial 13 bold', title='Informação!')

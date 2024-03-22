@@ -2,7 +2,7 @@ from interface_grafica import *
 import sqlite3
 
 
-# INSERIR PRODUTOS NO DATABASE
+# INSERIR VENDAS
 def inserir_db(idproduto, data, hora, valor, modopag, produto, cliente, usuario):
     banco = sqlite3.connect('acai_database.db')
     cursor = banco.cursor()
@@ -10,6 +10,7 @@ def inserir_db(idproduto, data, hora, valor, modopag, produto, cliente, usuario)
     banco.commit()
     sg.popup(f'FORMA DE PAGAMENTO {modopag} REFERENTE A VENDA DE {produto}, REGISTRADA COM SUCESSO!', font='Arial 15 bold', title='INFO')
 
+# INSERIR PRODUTOS NO TABELA DE CONTROLE DE ESTOQUE
 def inserir_frutas(fruta, quantidade, valor):
     banco = sqlite3.connect('acai_database.db')
     cursor = banco.cursor()
@@ -18,22 +19,23 @@ def inserir_frutas(fruta, quantidade, valor):
     cursor.execute("INSERT INTO FRUTAS VALUES('"+str(fruta)+"', '"+str(quantidade)+"', '"+str(valor)+"')")
     banco.commit()
 
-def inserir_utilidades(produto, quantidade, valor):
+def inserir_utilidades(utilidade, quantidade, valor):
     banco = sqlite3.connect('acai_database.db')
     cursor = banco.cursor()
-    cursor.execute('CREATE TABLE IF NOT EXISTS UTILIDADES(PRODUTO text, QUANTIDADE integer, VALOR integer)')
+    cursor.execute('CREATE TABLE IF NOT EXISTS UTILIDADES (UTILIDADE text, QUANTIDADE integer, VALOR integer)')
     banco.commit()
-    cursor.execute("INSERT INTO UTILIDADES VALUES ('"+str(produto)+"', '"+str(quantidade)+"', '"+str(valor)+"')")
+    cursor.execute("INSERT INTO UTILIDADES VALUES ('"+str(utilidade)+"', '"+str(quantidade)+"', '"+str(valor)+"')")
     banco.commit()
 
-def inserir_gelatos(produto, quantidade, valor):
+def inserir_gelatos(gelato, quantidade, valor):
     banco = sqlite3.connect('acai_database.db')
     cursor = banco.cursor()
-    cursor.execute('CREATE TABLE IF NOT EXISTS GELATOS(PRODUTO text, QUANTIDADE integer, VALOR integer)')
+    cursor.execute('CREATE TABLE IF NOT EXISTS GELATOS (GELATO text, QUANTIDADE integer, VALOR integer)')
     banco.commit()
-    cursor.execute("INSERT INTO GELATOS VALUES('"+str(produto)+"', '"+str(quantidade)+"', '"+str(valor)+"')")
+    cursor.execute("INSERT INTO GELATOS VALUES('"+str(gelato)+"', '"+str(quantidade)+"', '"+str(valor)+"')")
     banco.commit()
 
+# RELATÓRIOS DE CONTROLE DE ESTOQUE
 def ver_gelatos():
     banco = sqlite3.connect('acai_database.db')
     cursor = banco.cursor()
@@ -43,9 +45,9 @@ def ver_gelatos():
         print(f'Produto: {gelato[0]}, Quantidade: {gelato[1]}, Investimento: {gelato[2]}.')
 
     cursor.execute('SELECT VALOR FROM GELATOS')
-    resfrutas = cursor.fetchall()
+    resgelatos = cursor.fetchall()
     somagelatos = 0
-    for i in resfrutas:
+    for i in resgelatos:
         somagelatos = somagelatos + i[0]
     print(f'\nVALOR TOTAL DO INVESTIMENTO: {somagelatos}')
         
@@ -58,9 +60,9 @@ def ver_utilidades():
         print(f'Produto: {utilidade[0]}, Quantidade: {utilidade[1]}, Investimento: {utilidade[2]}.')
 
     cursor.execute('SELECT VALOR FROM UTILIDADES')
-    resfrutas = cursor.fetchall()
+    resutilidades = cursor.fetchall()
     somautilidades = 0
-    for i in resfrutas:
+    for i in resutilidades:
         somautilidades = somautilidades + i[0]
     print(f'\nVALOR TOTAL DO INVESTIMENTO: {somautilidades}')
 
@@ -79,6 +81,7 @@ def ver_frutas():
         somafrutas = somafrutas + i[0]
     print(f'\nVALOR TOTAL DO INVESTIMENTO: {somafrutas}')
 
+# RELATÓRIOS DE VENDAS
 def relatorio_completo():
     banco = sqlite3.connect('acai_database.db')
     cursor = banco.cursor()

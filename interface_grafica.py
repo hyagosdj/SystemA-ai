@@ -65,7 +65,7 @@ def criar_janela_prin():
         [sg.Text('TROCO: ', font='Arial 25 bold', text_color='White'), sg.Text('0.00', background_color='white', text_color='black', font='Arial 35 bold',
             key='saidatroco', pad=(0,0, (10,6)))],
         [sg.Text('\n\n\n\n')],
-        [sg.Button('CONFIRMAR[F5]', pad=(10, 5), font='Arial 15 bold', size=(14, 3)), sg.Button('CANCELAR PEDIDO[F7]', pad=(10, 5), font='Arial 15 bold', size=(14, 3)),
+        [sg.Button('CONFIRMAR', pad=(10, 5), font='Arial 15 bold', size=(14, 3)), sg.Button('CANCELAR PEDIDO', pad=(10, 5), font='Arial 15 bold', size=(14, 3)),
         sg.Button('NOVO PEDIDO', pad=(10, 5), font='Arial 15 bold', size=(14,3))]
 
     ]
@@ -91,11 +91,11 @@ def criar_janela_controle():
     sg.theme('DarkBlue')
 
     menu = [
-        ['CATEGORIAS', ['...']]
+        ['CATEGORIAS', ['VOLTAR']]
     ]
 
     col1 = [
-        [sg.Combo(['BANANA', 'MORANGO', 'BAUNILHA', 'CHOCOLATE', 'TAPIOCA', 'NAPOLITANO', 'MENTA', 'NUTELLA',
+        [sg.Combo(['','BANANA', 'MORANGO', 'BAUNILHA', 'CHOCOLATE', 'TAPIOCA', 'NAPOLITANO', 'MENTA', 'NUTELLA',
                    'CHICLETE', 'CASTANHA', 'CREME COM PASSAS', 'ABACAXI', 'AÇAÍ'], font='Arial 20 bold', size=20, key='gelatos')],
         [sg.Text('\n\n\n\n\n\n\n\n')],
         [sg.Text('QUANTIDADE:', font='Arial 14 bold')],
@@ -107,7 +107,7 @@ def criar_janela_controle():
     ]
 
     col2 = [
-        [sg.Combo(['CASQUINHAS', 'COLHERES', 'COPOS 450ml', 'COPOS 500ml', 'VASILHA 450ml', 'VASILHA 750'],
+        [sg.Combo(['','CASQUINHAS', 'COLHERES', 'COPOS 450ml', 'COPOS 500ml', 'VASILHA 450ml', 'VASILHA 750'],
                   font='Arial 20 bold', size=20, key='utilidades')],
         [sg.Text('\n\n\n\n\n\n\n\n')],
         [sg.Text('QUANTIDADE:', font='Arial 14 bold')],
@@ -119,7 +119,7 @@ def criar_janela_controle():
     ]
 
     col3 = [
-        [sg.Combo(['BANANA', 'KIWI', 'MANGA', 'MORANGO', 'PITAYA', 'UVA'], font='Arial 20 bold', size=20, key='frutas')],
+        [sg.Combo(['','BANANA', 'KIWI', 'MANGA', 'MORANGO', 'PITAYA', 'UVA'], font='Arial 20 bold', size=20, key='frutas')],
         [sg.Text('\n\n\n\n\n\n\n\n')],
         [sg.Text('QUANTIDADE:', font='Arial 14 bold')],
         [sg.Input(key='qntfrutas', font='Arial 14 bold', size=20)],
@@ -147,16 +147,16 @@ def janela_cancelar():
     sg.theme('DarkBlue13')
 
     col1 = [
-        [sg.Text('DIGITE O [VALOR DA VENDA] QUE DESEJA CANCELAR:', font='Arial 13 bold')],
-        [sg.Input('',font='Arial 13 bold', key='valorcancelar')],
-        [sg.Text('APÓS A BUSCA, INFORME A LINHA QUE O ITEM SE ENCONTRAR:', font='Arial 13 bold')],
-        [sg.Input(key='idcancelar')],
+        [sg.Text('AGORA PRESSIONE PROCURAR PARA VERIFICAR SUAS VENDAS E APÓS SELECIONE A LINHA QUE O MESMO SE ENCONTRA PARA EFETUAR O CANCELAMENTO DA VENDA', font='Arial 13 bold')],
+        #[sg.Input('',font='Arial 13 bold', key='valorcancelar')],
+        [sg.Text('INFORME A LINHA QUE O ITEM SE ENCONTRAR:', font='Arial 13 bold')],
+        [sg.Input('',font='Arial 13 bold', key='idcancelar')],
         [sg.Button('PROCURAR', font='Arial 13 bold', size=(9, 3)), sg.Button('CANCELAR', font='Arial 13 bold', size=(9, 3)), 
         sg.Button('VOLTAR', font='Arial 13 bold', size=(9, 3))]
     ]
 
     col2 = [
-        [sg.Output(background_color='Black', text_color='White', size=(60, 15), key='saidacancelar')]
+        [sg.Output(font='Arial 13 bold', background_color='Black', text_color='White', size=(60, 15), key='saidacancelar')]
     ]
 
     layout = [
