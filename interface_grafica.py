@@ -4,7 +4,7 @@ from datetime import date, datetime
 
 # CRIAR TELA LOGIN
 def criar_janela_login():
-    sg.theme('DarkBlue')
+    sg.theme('DarkBlack')
 
     layout = [
         [sg.Text('NOME DE USUÁRIO:', font='Arial 13 bold')],
@@ -88,10 +88,10 @@ def criar_janela_prin():
 
 # CRIAR TELA CONTROLE DE ESTOQUE
 def criar_janela_controle():
-    sg.theme('DarkBlue')
+    sg.theme('DarkBlack')
 
     menu = [
-        ['CATEGORIAS', ['VOLTAR']]
+        ['SOBRE', ['AJUDA']]
     ]
 
     col1 = [
@@ -137,7 +137,9 @@ def criar_janela_controle():
         [sg.Text('CONTROLE DE ESTOQUE AÇAÍ TECH SYSTEM', font='Arial 23 bold', pad=(270, 0))],
         [sg.Menu(menu), sg.Frame('GELATOS:', font='Arial 15 bold', layout=col1), 
         sg.Frame('UTILIDADES:', font='Arial 15 bold', layout=col2), 
-        sg.Frame('FRUTAS:', font='Arial 15 bold', layout=col3), sg.Frame('DISPLAY:', font='Arial 15 bold', layout=col4)]
+        sg.Frame('FRUTAS:', font='Arial 15 bold', layout=col3), 
+        sg.Frame('DISPLAY:', font='Arial 15 bold', layout=col4)],
+        [sg.Button('VOLTAR', font='Arial 14 bold', size=12)]
     ]
 
     return sg.Window('CONTROLE DE ESTOQUE', layout=layout, finalize=True, resizable=True)
@@ -147,7 +149,7 @@ def janela_cancelar():
     sg.theme('DarkBlue13')
 
     col1 = [
-        [sg.Text('AGORA PRESSIONE PROCURAR PARA VERIFICAR SUAS VENDAS E APÓS SELECIONE A LINHA QUE O MESMO SE ENCONTRA PARA EFETUAR O CANCELAMENTO DA VENDA', font='Arial 13 bold')],
+        [sg.Text('AGORA PRESSIONE [PROCURAR] PARA VERIFICAR SUAS VENDAS E APÓS SELECIONE A LINHA QUE O MESMO SE ENCONTRA.', font='Arial 13 bold')],
         #[sg.Input('',font='Arial 13 bold', key='valorcancelar')],
         [sg.Text('INFORME A LINHA QUE O ITEM SE ENCONTRAR:', font='Arial 13 bold')],
         [sg.Input('',font='Arial 13 bold', key='idcancelar')],

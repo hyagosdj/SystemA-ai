@@ -257,10 +257,7 @@ while True:
                                                 print('SEGUE RELATÓRIO COMPLETO DAS VENDAS\n')
                                                 for vendatt in vendastotais:
                                                     print(f'Linha: {vendatt[0]} | DATA: {vendatt[1]} - {vendatt[2]}, FORMA DE PAGAMENTO: {vendatt[3]}, VALOR: R$ {vendatt[4]}\n')
-                                                      
-
-
-                                                
+                                                                                                    
 #                                                try:
 #                                                    cursor.execute('SELECT ROWID, ID, FORMA, VALOR FROM VENDAS WHERE VALOR = {}'.format(values['valorcancelar'].replace(',', '.')))
 #                                                    valores_db = cursor.fetchall()
@@ -358,11 +355,28 @@ while True:
                                             qntfrutas = values['qntfrutas']
                                             valorfrutas = values['valorfrutas']
 
+                                            # UM PEQUENO AUXILIO PARA PREENCHER CORRETAMENTE.
+                                            if events == 'AJUDA':
+                                                print('*' * 90)
+                                                print(f'{' ' * 19}COMO FUNCIONA O PREENCHIMENTO DESTA JANELA')
+                                                print('*' * 90)
+                                                print('PRIMEIRO VOCÊ DEVERÁ SELECIONAR UM ITEM DAS CATEGORIAS: \n GELATO | UTILIDADE | FRUTA')
+                                                print('EM SEGUIDA COLOCARÁ A QUANTIDADE E O VALOR UTILIZADO PARA ADQUIRÍ-LOS')
+                                                print('LOGO APÓS PRESSIONE EM [ADD GELATO/UTILIDADE/FRUTA] PARA ADICIONAR NO BANCO DE DADOS OU PRESSIONE EM \n[VER GELATOS/UTILIDADES/FRUTAS]')
+                                                print('O VALOR REGISTRADO SERÁ MOSTRADO EM UMA SOMA E AO LADO DO PRODUTO, SEU VALOR TAMBÉM.')
+                                                print('SENDO ASSIM CASO DESEJE REGRESSAR A TELA ANTERIOR, PRESSIONE EM [VOLTAR] E RETORNARÁ PARA A TELA DE ATENDIMENTO.')
+
                                             if events == sg.WINDOW_CLOSED:
                                                 criar_janela_prin()
                                                 window.close()
                                                 break
 
+                                            if events == 'VOLTAR':
+                                                window.close()
+                                                criar_janela_prin()
+                                                break
+
+                                            # CADASTRAR OS PRODUTOS NO CONTROLE DE ESTOQUE
                                             if events == 'ADD GELATO':
                                                 try:
                                                     if not gelatos == '':
@@ -372,15 +386,6 @@ while True:
                                                         sg.popup('Selecione um gelato.', font='Arial 13 bold', title='ERRO')
                                                 except:                                                    
                                                     sg.popup('Algo deu errado. Tente novamente e verifique os campos de gelatos estão preenchidos.', font='Arial 13 bold', title='ERRO')
-
-                                            if events == 'VER GELATOS':
-                                                try:
-                                                    window['mostrarproduto'].update('')
-                                                    print('RELATÓRIO DOS GELATOS EM ESTOQUE:\n')
-                                                    ver_gelatos()
-                                                except:
-                                                    sg.popup('Banco de dados está em branco, adicione algo para conseguir verificar.', font='Arial 13 bold', title='INFORMAÇÃO')
-
 
                                             if events == 'ADD UTILIDADE':
                                                 try:
@@ -392,14 +397,6 @@ while True:
                                                 except:
                                                     sg.popup('Algo deu errado. Tente novamente e verifique os campos de utilidades estão preenchidos.', font='Arial 13 bold', title='ERRO')
 
-                                            if events == 'VER UTILIDADES':
-                                                try:
-                                                    window['mostrarproduto'].update('')
-                                                    print('RELATÓRIO DAS UTILIDADES EM ESTOQUE:\n')
-                                                    ver_utilidades()
-                                                except:
-                                                    sg.popup('Banco de dados está em branco, adicione algo para conseguir verificar.', font='Arial 13 bold', title='INFORMAÇÃO')
-
                                             if events == 'ADD FRUTA':
                                                 try:
                                                     if not frutas == '':
@@ -409,6 +406,23 @@ while True:
                                                         sg.popup('Selecione uma fruta.', font='Arial 13 bold', title='ERRO')
                                                 except:
                                                     sg.popup('Algo deu errado. Tente novamente e verifique os campos de frutas estão preenchidos.', font='Arial 13 bold', title='ERRO')
+
+                                            # VERIFICAR OS PRODUTOS CADASTRADOS NO CONTROLE DE ESTOQUE
+                                            if events == 'VER GELATOS':
+                                                try:
+                                                    window['mostrarproduto'].update('')
+                                                    print('RELATÓRIO DOS GELATOS EM ESTOQUE:\n')
+                                                    ver_gelatos()
+                                                except:
+                                                    sg.popup('Banco de dados está em branco, adicione algo para conseguir verificar.', font='Arial 13 bold', title='INFORMAÇÃO')
+
+                                            if events == 'VER UTILIDADES':
+                                                try:
+                                                    window['mostrarproduto'].update('')
+                                                    print('RELATÓRIO DAS UTILIDADES EM ESTOQUE:\n')
+                                                    ver_utilidades()
+                                                except:
+                                                    sg.popup('Banco de dados está em branco, adicione algo para conseguir verificar.', font='Arial 13 bold', title='INFORMAÇÃO')
 
                                             if events == 'VER FRUTAS':
                                                 try:
@@ -429,3 +443,4 @@ while True:
                  
         except:
             sg.popup('O programa está sendo finalizado.', font='Arial 13 bold', title='Informação!')
+            break
