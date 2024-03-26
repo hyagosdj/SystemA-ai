@@ -131,23 +131,13 @@ def relatorio_sorvete():
         somavs = somavs + sorvete[0]
     print(f'O VALOR TOTAL DE VENDAS É R${round(somavs, 2)}')
 
-# REMOVER PRODUTOS DO CONTROLE DE ESTOQUE
-"""def excluir_gelato(gelato, quantidade):
-    banco = sqlite3.connect('acai_database.db')
-    cursor = banco.cursor()
-    cursor.execute('DELETE FROM GELATOS WHERE GELATO = {} AND QUANTIDADE = {}'.format(gelato, quantidade))
-    banco.commit()
-
-def excluir_utilidade(utilidade, quantidade):
-    pass
-
-def excluir_frutas(fruta, quantidade):
-    pass"""
 
 def conexao_db():
     banco = sqlite3.connect('acai_database.db')
     cursor = banco.cursor()
 
+# MÉTODOS NÃO UTILIZADOS ATÉ O MOMENTO
+    # TESTAR A FUNCIONALIDADE NO CÓDIGO FONTE DANDO PREFERENCIA PARA AS VERIFICAÇÕES.
 def del_gelato(produto, id):
     banco = sqlite3.connect('acai_database.db')
     cursor = banco.cursor()
@@ -158,8 +148,7 @@ def del_gelato(produto, id):
         if g[0] == id and g[1] == produto:
             print(g)
             cursor.execute('DELETE FROM GELATOS WHERE ROWID = {}'.format(id))
-            banco.commit()
-            
+            banco.commit()        
 
 def del_utilidade(produto, id):
     banco = sqlite3.connect('acai_database.db')
