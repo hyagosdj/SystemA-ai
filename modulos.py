@@ -1,7 +1,6 @@
 from interface_grafica import *
 import sqlite3
 
-
 # INSERIR VENDAS
 def inserir_db(idproduto, data, hora, valor, modopag, produto, cliente, usuario):
     banco = sqlite3.connect('acai_database.db')
@@ -39,10 +38,10 @@ def inserir_gelatos(gelato, quantidade, valor):
 def ver_gelatos():
     banco = sqlite3.connect('acai_database.db')
     cursor = banco.cursor()
-    cursor.execute('SELECT * FROM GELATOS')
+    cursor.execute('SELECT ROWID, GELATO, QUANTIDADE, VALOR FROM GELATOS')
     gelatos = cursor.fetchall()
     for gelato in gelatos:
-        print(f'Produto: {gelato[0]}, Quantidade: {gelato[1]}, Investimento: {gelato[2]}.')
+        print(f'ID: {gelato[0]}, Produto: {gelato[1]}, Quantidade: {gelato[2]}, Investimento: {gelato[3]}.')
 
     cursor.execute('SELECT VALOR FROM GELATOS')
     resgelatos = cursor.fetchall()
@@ -54,10 +53,10 @@ def ver_gelatos():
 def ver_utilidades():
     banco = sqlite3.connect('acai_database.db')
     cursor = banco.cursor()
-    cursor.execute('SELECT * FROM UTILIDADES')
+    cursor.execute('SELECT ROWID, UTILIDADE, QUANTIDADE, VALOR FROM UTILIDADES')
     utilidades = cursor.fetchall()
     for utilidade in utilidades:
-        print(f'Produto: {utilidade[0]}, Quantidade: {utilidade[1]}, Investimento: {utilidade[2]}.')
+        print(f'ID: {utilidade[0]}, Utilidade: {utilidade[1]}, Quantidade: {utilidade[2]}, Investimento: {utilidade[3]}.')
 
     cursor.execute('SELECT VALOR FROM UTILIDADES')
     resutilidades = cursor.fetchall()
@@ -69,10 +68,10 @@ def ver_utilidades():
 def ver_frutas():
     banco = sqlite3.connect('acai_database.db')
     cursor = banco.cursor()
-    cursor.execute('SELECT * FROM FRUTAS')
+    cursor.execute('SELECT ROWID, FRUTA, QUANTIDADE, VALOR FROM FRUTAS')
     frutas = cursor.fetchall()
     for fruta in frutas:
-        print(f'Fruta: {fruta[0]}, Quantidade: {fruta[1]}, Investimento: {fruta[2]}.')
+        print(f'ID: {fruta[0]}, Fruta: {fruta[1]}, Quantidade: {fruta[2]}, Investimento: {fruta[3]}.')
 
     cursor.execute('SELECT VALOR FROM FRUTAS')
     resfrutas = cursor.fetchall()
@@ -131,3 +130,53 @@ def relatorio_sorvete():
     for sorvete in resvs:
         somavs = somavs + sorvete[0]
     print(f'O VALOR TOTAL DE VENDAS É R${round(somavs, 2)}')
+
+# REMOVER PRODUTOS DO CONTROLE DE ESTOQUE
+"""def excluir_gelato(gelato, quantidade):
+    banco = sqlite3.connect('acai_database.db')
+    cursor = banco.cursor()
+    cursor.execute('DELETE FROM GELATOS WHERE GELATO = {} AND QUANTIDADE = {}'.format(gelato, quantidade))
+    banco.commit()
+
+def excluir_utilidade(utilidade, quantidade):
+    pass
+
+def excluir_frutas(fruta, quantidade):
+    pass"""
+
+def conexao_db():
+    banco = sqlite3.connect('acai_database.db')
+    cursor = banco.cursor()
+
+def del_gelato(produto, id):
+    banco = sqlite3.connect('acai_database.db')
+    cursor = banco.cursor()
+
+    cursor.execute('SELECT ROWID, GELATO FROM GELATOS')
+    gall = cursor.fetchall()
+    for g in gall:
+        if g[0] == id and g[1] == produto:
+            print(g)
+            cursor.execute('DELETE FROM GELATOS WHERE ROWID = {}'.format(id))
+            banco.commit()
+            
+
+def del_utilidade(produto, id):
+    banco = sqlite3.connect('acai_database.db')
+    cursor = banco.cursor()
+    cursor.execute('SELECT ROWID, UTILIDADE, QUANTIDADE, VALOR FROM UTILIDADES')
+    uall = cursor.fetchall()
+    for u in uall:
+        if u[0] == id and u[1] == produto:
+            cursor.execute('DELETE FROM UTILIDADES WHERE ROWID = {}'.format(id))
+            banco.commit()
+
+def del_fruta(produto, id):
+    banco = sqlite3.connect('acai_database.db')
+    cursor = banco.cursor()
+    cursor.execute('SELECT ROWID, FRUTA, QUANTIDADE, VALOR FROM FRUTAS')
+    fall = cursor.fetchall()
+    for f in fall:
+        if f[0] == id and f[1] == produto:
+            cursor.execute('DELETE FROM FRUTAS WHERE ROWID = {}'.format(id))
+            banco.commit()

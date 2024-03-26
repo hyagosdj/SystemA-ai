@@ -97,35 +97,44 @@ def criar_janela_controle():
     col1 = [
         [sg.Combo(['','BANANA', 'MORANGO', 'BAUNILHA', 'CHOCOLATE', 'TAPIOCA', 'NAPOLITANO', 'MENTA', 'NUTELLA',
                    'CHICLETE', 'CASTANHA', 'CREME COM PASSAS', 'ABACAXI', 'AÇAÍ'], font='Arial 20 bold', size=20, key='gelatos')],
-        [sg.Text('\n\n\n\n\n\n\n\n')],
+        [sg.Text('\n\n')],
+        [sg.Text('ID DO PRODUTO:', font='Arial 14 bold')],
+        [sg.Input(key='idgelato', font='Arial 14 bold', size=20)],
         [sg.Text('QUANTIDADE:', font='Arial 14 bold')],
         [sg.Input(key='qntgelatos', font='Arial 14 bold', size=20)],
         [sg.Text('VALOR:', font='Arial 14 bold')],
         [sg.Input(key='valorgelatos', font='Arial 14 bold', size=20)],
-        [sg.Button('ADD GELATO', font='Arial 14 bold', size=14), sg.Button('VER GELATOS', font='Arial 14 bold', size=14)]
+        [sg.Text('\n\n\n')],
+        [sg.Button('ADD GELATO', font='Arial 14 bold', size=12), sg.Button('REMOVER GELATO(S)', font='Arial 14 bold', size=12), sg.Button('VER GELATOS', font='Arial 14 bold', size=12)]
 
     ]
 
     col2 = [
         [sg.Combo(['','CASQUINHAS', 'COLHERES', 'COPOS 450ml', 'COPOS 500ml', 'VASILHA 450ml', 'VASILHA 750'],
                   font='Arial 20 bold', size=20, key='utilidades')],
-        [sg.Text('\n\n\n\n\n\n\n\n')],
+        [sg.Text('\n\n')],
+        [sg.Text('ID DO PRODUTO:', font='Arial 14 bold')],
+        [sg.Input(key='idutilidade', font='Arial 14 bold', size=20)],
         [sg.Text('QUANTIDADE:', font='Arial 14 bold')],
         [sg.Input(key='qntutilidades', font='Arial 14 bold', size=20)],
         [sg.Text('VALOR:', font='Arial 14 bold')],
         [sg.Input(key='valorutilidades', font='Arial 14 bold', size=20)],
-        [sg.Button('ADD UTILIDADE', font='Arial 14 bold', size=14), sg.Button('VER UTILIDADES', font='Arial 14 bold', size=14)]
+        [sg.Text('\n\n\n')],
+        [sg.Button('ADD UTILIDADE', font='Arial 14 bold', size=12), sg.Button('REMOVER UTILIDADE(S)', font='Arial 14 bold', size=12), sg.Button('VER UTILIDADES', font='Arial 14 bold', size=12)]
 
     ]
 
     col3 = [
         [sg.Combo(['','BANANA', 'KIWI', 'MANGA', 'MORANGO', 'PITAYA', 'UVA'], font='Arial 20 bold', size=20, key='frutas')],
-        [sg.Text('\n\n\n\n\n\n\n\n')],
+        [sg.Text('\n\n')],
+        [sg.Text('ID DO PRODUTO:', font='Arial 14 bold')],
+        [sg.Input(key='idfruta', font='Arial 14 bold', size=20)],
         [sg.Text('QUANTIDADE:', font='Arial 14 bold')],
         [sg.Input(key='qntfrutas', font='Arial 14 bold', size=20)],
         [sg.Text('VALOR:', font='Arial 14 bold')],
         [sg.Input(key='valorfrutas', font='Arial 14 bold', size=20)],
-        [sg.Button('ADD FRUTA', font='Arial 14 bold', size=12), sg.Button('VER FRUTAS', font='Arial 14 bold', size=12)]
+        [sg.Text('\n\n\n')],
+        [sg.Button('ADD FRUTA', font='Arial 14 bold', size=12), sg.Button('REMOVER FRUTA(S)', font='Arial 14 bold', size=12), sg.Button('VER FRUTAS', font='Arial 14 bold', size=12)]
         
     ]
 
