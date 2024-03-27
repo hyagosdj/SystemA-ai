@@ -136,36 +136,25 @@ def conexao_db():
     banco = sqlite3.connect('acai_database.db')
     cursor = banco.cursor()
 
-# MÉTODOS NÃO UTILIZADOS ATÉ O MOMENTO
-    # TESTAR A FUNCIONALIDADE NO CÓDIGO FONTE DANDO PREFERENCIA PARA AS VERIFICAÇÕES.
-def del_gelato(produto, id):
+"""
+    MÉTODOS NÃO UTILIZADOS ATÉ O MOMENTO
+    TESTAR A FUNCIONALIDADE NO CÓDIGO FONTE DANDO PREFERENCIA PARA AS VERIFICAÇÕES.
+                26/03/2024 ~feita a integração dos Métodos dentro do Código Fonte. FUNCIONANDO CORRETAMENTE
+    VERIFICAR A POSSIBILIDADE DE ALTERAR ATRAVES DO .FORMAT AS REFERENCIAS DA COLUNA E DA TABELA DO BANCO DE DADOS
+                26/03/2024 ~verificado a possibilidade e o codigo segue funcionando corretamente e eliminado dois blocos de códigos repetidos.
+"""
+def del_item(coluna, tabela, id, produto):
     banco = sqlite3.connect('acai_database.db')
     cursor = banco.cursor()
 
-    cursor.execute('SELECT ROWID, GELATO FROM GELATOS')
+    cursor.execute('SELECT ROWID, {} FROM {}'.format(coluna, tabela))
     gall = cursor.fetchall()
+    if not gall:
+        sg.popup('GELATO NÃO ENCONTRADO.', font='Arial 13 bold', title='INFORMAÇÃO')
     for g in gall:
-        if g[0] == id and g[1] == produto:
-            print(g)
-            cursor.execute('DELETE FROM GELATOS WHERE ROWID = {}'.format(id))
-            banco.commit()        
-
-def del_utilidade(produto, id):
-    banco = sqlite3.connect('acai_database.db')
-    cursor = banco.cursor()
-    cursor.execute('SELECT ROWID, UTILIDADE, QUANTIDADE, VALOR FROM UTILIDADES')
-    uall = cursor.fetchall()
-    for u in uall:
-        if u[0] == id and u[1] == produto:
-            cursor.execute('DELETE FROM UTILIDADES WHERE ROWID = {}'.format(id))
+        if g[0] == int(id) and g[1] == produto:
+            cursor.execute('DELETE FROM GELATOS WHERE ROWID = {}'.format(int(id)))
             banco.commit()
-
-def del_fruta(produto, id):
-    banco = sqlite3.connect('acai_database.db')
-    cursor = banco.cursor()
-    cursor.execute('SELECT ROWID, FRUTA, QUANTIDADE, VALOR FROM FRUTAS')
-    fall = cursor.fetchall()
-    for f in fall:
-        if f[0] == id and f[1] == produto:
-            cursor.execute('DELETE FROM FRUTAS WHERE ROWID = {}'.format(id))
-            banco.commit()
+            sg.popup(f'Removido com sucesso: {produto}', font='Arial 13 bold', title='INFORMAÇÃO')
+        else:
+            sg.popup('NÃO ENCONTRADO, FAVOR VERIFICAR', font='Arial 13 bold', title='INFORMAÇÃO')

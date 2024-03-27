@@ -404,7 +404,7 @@ while True:
                                                         inserir_utilidades(utilidades, qntutilidades, valorutilidades)
                                                         sg.popup(f'Inserido com sucesso: {utilidades}, QNT: {qntutilidades}, Valor: {valorutilidades}', font='Arial 13 bold', title='INFORMAÇÃO')
                                                     else:
-                                                        sg.popup('Selecione uma utilidade.', font='Arial 13 bold', title='ERRO')
+                                                        sg.popup('Verifique os campos UTILIDADE, QUANTIDADE e VALOR.', font='Arial 13 bold', title='ERRO')
                                                 except:
                                                     sg.popup('Algo deu errado. Tente novamente e verifique os campos de utilidades estão preenchidos.', font='Arial 13 bold', title='ERRO')
 
@@ -414,7 +414,7 @@ while True:
                                                         inserir_frutas(frutas, qntfrutas, valorfrutas)
                                                         sg.popup(f'Inserido com sucesso: {frutas}, QNT: {qntfrutas}, Valor: {valorfrutas}', font='Arial 13 bold', title='INFORMAÇÃO')
                                                     else:
-                                                        sg.popup('Selecione uma fruta.', font='Arial 13 bold', title='ERRO')
+                                                        sg.popup('Verifique os campos FRUTA, QUANTIDADE e VALOR.', font='Arial 13 bold', title='ERRO')
                                                 except:
                                                     sg.popup('Algo deu errado. Tente novamente e verifique os campos de frutas estão preenchidos.', font='Arial 13 bold', title='ERRO')
 
@@ -463,18 +463,7 @@ while True:
                                                 try:
                                                     window['mostrarproduto'].update('')
                                                     if idgelato.isdigit() and not gelatos == '':
-                                                        conexao_db()
-                                                        cursor.execute('SELECT ROWID, GELATO FROM GELATOS')
-                                                        produtos = cursor.fetchall()
-                                                        if not produtos:
-                                                            sg.popup('GELATO NÃO ENCONTRADO.', font='Arial 13 bold', title='INFORMAÇÃO')
-                                                        for p in produtos:
-                                                            if p[0] == int(idgelato) and p[1] == gelatos:
-                                                                cursor.execute('DELETE FROM GELATOS WHERE ROWID = {}'.format(int(idgelato)))
-                                                                banco.commit()
-                                                                sg.popup(f'Removido com sucesso: {gelatos}', font='Arial 13 bold', title='INFORMAÇÃO')
-                                                            else:
-                                                                sg.popup('NÃO ENCONTRADO, FAVOR VERIFICAR', font='Arial 13 bold', title='INFORMAÇÃO')
+                                                        del_item('GELATO', 'GELATOS', idgelato, gelatos)
                                                     else:
                                                         sg.popup('SOMENTE DÍGITO NO CAMPO: ID | ex: 1,2,3...', font='Arial 13 bold', title='INFORMAÇÃO')
                                                 except:
@@ -484,21 +473,9 @@ while True:
                                                 try:
                                                     window['mostrarproduto'].update('')
                                                     if idutilidade.isdigit() and not utilidades == '':
-                                                        conexao_db()
-                                                        cursor.execute('SELECT ROWID, UTILIDADE FROM UTILIDADES')
-                                                        uteis = cursor.fetchall()
-                                                        if not uteis:
-                                                            sg.popup('UTILIDADE NÃO ENCONTRADA.', font='Arial 13 bold', title='INFORMAÇÃO')
-                                                        for u in uteis:
-                                                            if u[0] == int(idutilidade) and u[1] == utilidades:
-                                                                cursor.execute('DELETE FROM UTILIDADES WHERE ROWID = {}'.format(int(idutilidade)))
-                                                                banco.commit()
-                                                                sg.popup(f'Removido com sucesso: {utilidades}', font='Arial 13 bold', title='INFORMAÇÃO')
-                                                            else:
-                                                                sg.popup('NÃO ENCONTRADO, FAVOR VERIFICAR', font='Arial 13 bold', title='INFORMAÇÃO')
+                                                        del_item('UTILIDADE', 'UTILIDADES', idutilidade, utilidades)
                                                     else:
                                                         sg.popup('SOMENTE DÍGITO NO CAMPO: ID | ex: 1,2,3...', font='Arial 13 bold', title='INFORMAÇÃO')
-
                                                 except:
                                                     sg.popup('Preencha a UTILIDADE e o ID para REMOVER', font='Arial 13 bold', title='INFORMAÇÃO')
 
@@ -506,18 +483,7 @@ while True:
                                                 try:
                                                     window['mostrarproduto'].update('')
                                                     if idfruta.isdigit() and not frutas == '':
-                                                        conexao_db()
-                                                        cursor.execute('SELECT ROWID, FRUTA FROM FRUTAS')
-                                                        fall = cursor.fetchall()
-                                                        if not fall:
-                                                            sg.popup('FRUTA NÃO ENCONTRADA.', font='Arial 13 bold', title='INFORMAÇÃO')
-                                                        for f in fall:
-                                                            if f[0] == int(idfruta) and f[1] == frutas:
-                                                                cursor.execute('DELETE FROM FRUTAS WHERE ROWID = {}'.format(int(idfruta)))
-                                                                banco.commit()
-                                                                sg.popup(f'Removido com sucesso: {frutas}', font='Arial 13 bold', title='INFORMAÇÃO')
-                                                            else:
-                                                                sg.popup('NÃO ENCONTRADO, FAVOR VERIFICAR', font='Arial 13 bold', title='INFORMAÇÃO')
+                                                        del_item('FRUTA', 'FRUTAS', idfruta, frutas)
                                                     else:
                                                         sg.popup('SOMENTE DÍGITO NO CAMPO: ID | ex: 1,2,3...', font='Arial 13 bold', title='INFORMAÇÃO')
                                                 except:
@@ -532,6 +498,7 @@ while True:
             else:
                 sg.popup(f"SENHA INCORRETA!", font='Arial 13 bold', title='ERRO DE SENHA!')
                  
-        except:
-            sg.popup('O programa está sendo finalizado.', font='Arial 13 bold', title='Informação!')
-            break
+        except sqlite3.Error as erro:
+            print(erro)
+            #sg.popup('O programa está sendo finalizado.', font='Arial 13 bold', title='Informação!')
+            
