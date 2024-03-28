@@ -124,7 +124,7 @@ def relatorio_sorvete():
         if vs[0] == 2:
             print(f'DATA: {vs[1]} - {vs[2]}, FORMA DE PAGAMENTO: {vs[3]}, VALOR: R$ {vs[4]}\n')
     
-    cursor.execute('SELECT VALOR FROM VENDAS WHERE ID = 2')
+    cursor.execute('SELECT VALOR FROM VENDAS WHERE ID = 2') # .format(id)
     resvs = cursor.fetchall()
     somavs = 0
     for sorvete in resvs:
