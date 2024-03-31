@@ -169,10 +169,10 @@ while True:
                                                 sg.popup('PREENCHA O NOME do CLIENTE.', font='Arial 15 bold', title='ERRO!')
 
                                             elif idproduto == '1' and not trocoacai == None and not valorpago == None and cliente.isalpha():
-                                                inserir_db(idproduto, data, hora.strftime('%H:%M:%S'), valoracai, 'DÉBITO', 'AÇAÍ', cliente, usuario)
+                                                inserir_venda(idproduto, data, hora.strftime('%H:%M:%S'), valoracai, 'DÉBITO', 'AÇAÍ', cliente, usuario)
 
                                             elif idproduto == '2' and not trocosorvete == None and not valorpago == None and cliente.isalpha():
-                                                inserir_db(idproduto, data, hora.strftime('%H:%M:%S'), valorsorvete, 'DÉBITO', 'SORVETE', cliente, usuario)
+                                                inserir_venda(idproduto, data, hora.strftime('%H:%M:%S'), valorsorvete, 'DÉBITO', 'SORVETE', cliente, usuario)
                                             
                                             elif idproduto != '1' and idproduto != '2':
                                                 sg.popup('ID DO PRODUTO, SOMENTE [1] OU [2]', font='Arial 15 bold', title='ERRO!')
@@ -186,10 +186,10 @@ while True:
                                                 sg.popup('PREENCHA O NOME do CLIENTE.', font='Arial 15 bold', title='ERRO!')
 
                                             elif idproduto == '1' and not trocoacai == None and not valorpago == None and not cliente == None:
-                                                inserir_db(idproduto, data, hora.strftime('%H:%M:%S'), valoracai, 'CRÉDITO', 'AÇAÍ', cliente, usuario)
+                                                inserir_venda(idproduto, data, hora.strftime('%H:%M:%S'), valoracai, 'CRÉDITO', 'AÇAÍ', cliente, usuario)
 
                                             elif idproduto == '2' and not trocosorvete == None and not valorpago == None and not cliente == None:
-                                                inserir_db(idproduto, data, hora.strftime('%H:%M:%S'), valorsorvete, 'CRÉDITO', 'SORVETE', cliente, usuario)
+                                                inserir_venda(idproduto, data, hora.strftime('%H:%M:%S'), valorsorvete, 'CRÉDITO', 'SORVETE', cliente, usuario)
 
                                             elif idproduto != '1' and idproduto != '2':
                                                 sg.popup('ID DO PRODUTO, SOMENTE [1] OU [2]', font='Arial 15 bold', title='ERRO!')
@@ -203,10 +203,10 @@ while True:
                                                 sg.popup('PREENCHA O NOME do CLIENTE.', font='Arial 15 bold', title='ERRO!')
 
                                             elif idproduto == '1' and not trocoacai == None and not valorpago == None and not cliente == None:
-                                                inserir_db(idproduto, data, hora.strftime('%H:%M:%S'), valoracai, 'DINHEIRO', 'AÇAÍ', cliente, usuario)
+                                                inserir_venda(idproduto, data, hora.strftime('%H:%M:%S'), valoracai, 'DINHEIRO', 'AÇAÍ', cliente, usuario)
 
                                             elif idproduto == '2' and not trocosorvete == None and not valorpago == None and not cliente == None:
-                                                inserir_db(idproduto, data, hora.strftime('%H:%M:%S'), valorsorvete, 'DINHEIRO', 'SORVETE', cliente, usuario)
+                                                inserir_venda(idproduto, data, hora.strftime('%H:%M:%S'), valorsorvete, 'DINHEIRO', 'SORVETE', cliente, usuario)
 
                                             elif idproduto != '1' and idproduto != '2':
                                                 sg.popup('ID DO PRODUTO, SOMENTE [1] OU [2]', font='Arial 15 bold', title='ERRO!')
@@ -219,10 +219,10 @@ while True:
                                             if not cliente.isalpha():
                                                 sg.popup('PREENCHA O NOME do CLIENTE.', font='Arial 15 bold', title='ERRO!')
                                             elif idproduto == '1' and not trocoacai == None and not valorpago == None and not cliente == None:
-                                                inserir_db(idproduto, data, hora.strftime('%H:%M:%S'), valoracai, 'PIX', 'AÇAÍ', cliente, usuario)
+                                                inserir_venda(idproduto, data, hora.strftime('%H:%M:%S'), valoracai, 'PIX', 'AÇAÍ', cliente, usuario)
 
                                             elif idproduto == '2' and not trocosorvete == None and not valorpago == None and not cliente == None:
-                                                inserir_db(idproduto, data, hora.strftime('%H:%M:%S'), valorsorvete, 'PIX', 'SORVETE', cliente, usuario)
+                                                inserir_venda(idproduto, data, hora.strftime('%H:%M:%S'), valorsorvete, 'PIX', 'SORVETE', cliente, usuario)
 
                                             elif idproduto != '1' and idproduto != '2':
                                                 sg.popup('ID PRODUTO, SOMENTE [1] OU [2]', font='Arial 15 bold', title='ERRO!')
@@ -262,22 +262,6 @@ while True:
                                                         print(f'Linha: {vendatt[0]} | DATA: {vendatt[1]} - {vendatt[2]}, FORMA DE PAGAMENTO: {vendatt[3]}, VALOR: R$ {vendatt[4]}\n')
                                                 except:
                                                     sg.popup('Ocorreu algum erro durante a busca de vendas. Verifique se houve registro da venda', font='Arial 13 bold', title='INFORMAÇÃO')
-                                                                                                    
-#                                                try:
-#                                                    cursor.execute('SELECT ROWID, ID, FORMA, VALOR FROM VENDAS WHERE VALOR = {}'.format(values['valorcancelar'].replace(',', '.')))
-#                                                    valores_db = cursor.fetchall()
-#                                                    for valor_db in valores_db:
-#                                                        if valor_db[1] == 1:
-#                                                            print(f'Linha: {valor_db[0]} | {valor_db[1]}-AÇAÍ, Forma de Pagamento: {valor_db[2]}, Valor: {valor_db[3]}')
-#                                                        
-#                                                        elif valor_db[1] == 2:
-#                                                            print(f'Linha: {valor_db[0]} | {valor_db[1]}-SORVETE, Forma de Pagamento: {valor_db[2]}, Valor: {valor_db[3]}')
-#                                                        
-#                                                        else:
-#                                                            sg.popup(f"NÃO ENCONTRAMOS O VALOR DE: {values['valorcancelar']}", font='Arial 13 bold', title='ERRO!')
-
-#                                                except:
-#                                                    sg.popup('DIGITE CORRETAMENTE.', font='Arial 13 bold', title='ERRO!')
 
                                             elif events == 'CANCELAR':
                                                 try:
@@ -391,17 +375,17 @@ while True:
                                             if events == 'ADD GELATO':
                                                 try:
                                                     if not gelatos == '' and not qntgelatos == '' and not valorgelatos == '':
-                                                        inserir_gelatos(gelatos, qntgelatos, valorgelatos)
+                                                        inserir_item('GELATOS', 'GELATO', gelatos, qntgelatos, valorgelatos)
                                                         sg.popup(f'Inserido com sucesso: {gelatos}, QNT: {qntgelatos}, Valor: {valorgelatos}', font='Arial 13 bold', title='INFORMAÇÃO')
                                                     else:
                                                         sg.popup('Verifique os campos GELATO, QUANTIDADE e VALOR.', font='Arial 13 bold', title='ERRO')
-                                                except:                                                    
+                                                except:
                                                     sg.popup('Algo deu errado. Tente novamente e verifique os campos de gelatos estão preenchidos.', font='Arial 13 bold', title='ERRO')
 
                                             if events == 'ADD UTILIDADE':
                                                 try:
                                                     if not utilidades == '' and not qntutilidades == '' and not valorutilidades == '':
-                                                        inserir_utilidades(utilidades, qntutilidades, valorutilidades)
+                                                        inserir_item('UTILIDADES', 'UTILIDADE', utilidades, qntutilidades, valorutilidades)
                                                         sg.popup(f'Inserido com sucesso: {utilidades}, QNT: {qntutilidades}, Valor: {valorutilidades}', font='Arial 13 bold', title='INFORMAÇÃO')
                                                     else:
                                                         sg.popup('Verifique os campos UTILIDADE, QUANTIDADE e VALOR.', font='Arial 13 bold', title='ERRO')
@@ -411,7 +395,7 @@ while True:
                                             if events == 'ADD FRUTA':
                                                 try:
                                                     if not frutas == '' and not qntfrutas == '' and not valorfrutas == '':
-                                                        inserir_frutas(frutas, qntfrutas, valorfrutas)
+                                                        inserir_item('FRUTAS', 'FRUTA', frutas, qntfrutas, valorfrutas)
                                                         sg.popup(f'Inserido com sucesso: {frutas}, QNT: {qntfrutas}, Valor: {valorfrutas}', font='Arial 13 bold', title='INFORMAÇÃO')
                                                     else:
                                                         sg.popup('Verifique os campos FRUTA, QUANTIDADE e VALOR.', font='Arial 13 bold', title='ERRO')
@@ -428,7 +412,7 @@ while True:
                                                     window['valorgelatos'].update('')
                                                     window['gelatos'].set_focus()
                                                     print('RELATÓRIO DOS GELATOS EM ESTOQUE:\n')
-                                                    ver_gelatos()
+                                                    ver_itens('GELATO', 'GELATOS')
                                                 except:
                                                     sg.popup('Banco de dados está em branco, adicione algo para conseguir verificar.', font='Arial 13 bold', title='INFORMAÇÃO')
 
@@ -441,7 +425,7 @@ while True:
                                                     window['valorutilidades'].update('')
                                                     window['utilidades'].set_focus()
                                                     print('RELATÓRIO DAS UTILIDADES EM ESTOQUE:\n')
-                                                    ver_utilidades()
+                                                    ver_itens('UTILIDADE', 'UTILIDADES')
                                                 except:
                                                     sg.popup('Banco de dados está em branco, adicione algo para conseguir verificar.', font='Arial 13 bold', title='INFORMAÇÃO')
 
@@ -454,7 +438,7 @@ while True:
                                                     window['valorfrutas'].update('')
                                                     window['frutas'].set_focus()
                                                     print('RELATÓRIO DAS FRUTAS EM ESTOQUE:\n')
-                                                    ver_frutas()
+                                                    ver_itens('FRUTA', 'FRUTAS')
                                                 except:
                                                     sg.popup('Banco de Dados está em Branco, adicione algo para conseguir verificar.', font='Arial 13 bold', title='INFORMAÇÃO')
 
@@ -463,7 +447,7 @@ while True:
                                                 try:
                                                     window['mostrarproduto'].update('')
                                                     if idgelato.isdigit() and not gelatos == '':
-                                                        del_item('GELATO', 'GELATOS', idgelato, gelatos)
+                                                        remover_item('GELATO', 'GELATOS', idgelato, gelatos)
                                                     else:
                                                         sg.popup('SOMENTE DÍGITO NO CAMPO: ID | ex: 1,2,3...', font='Arial 13 bold', title='INFORMAÇÃO')
                                                 except:
@@ -473,7 +457,7 @@ while True:
                                                 try:
                                                     window['mostrarproduto'].update('')
                                                     if idutilidade.isdigit() and not utilidades == '':
-                                                        del_item('UTILIDADE', 'UTILIDADES', idutilidade, utilidades)
+                                                        remover_item('UTILIDADE', 'UTILIDADES', idutilidade, utilidades)
                                                     else:
                                                         sg.popup('SOMENTE DÍGITO NO CAMPO: ID | ex: 1,2,3...', font='Arial 13 bold', title='INFORMAÇÃO')
                                                 except:
@@ -483,7 +467,7 @@ while True:
                                                 try:
                                                     window['mostrarproduto'].update('')
                                                     if idfruta.isdigit() and not frutas == '':
-                                                        del_item('FRUTA', 'FRUTAS', idfruta, frutas)
+                                                        remover_item('FRUTA', 'FRUTAS', idfruta, frutas)
                                                     else:
                                                         sg.popup('SOMENTE DÍGITO NO CAMPO: ID | ex: 1,2,3...', font='Arial 13 bold', title='INFORMAÇÃO')
                                                 except:
@@ -500,5 +484,6 @@ while True:
                  
         except sqlite3.Error as erro:
             print(erro)
-            #sg.popup('O programa está sendo finalizado.', font='Arial 13 bold', title='Informação!')
-            
+            sg.popup('O programa está sendo finalizado.', font='Arial 13 bold', title='Informação!')
+        finally:
+            break

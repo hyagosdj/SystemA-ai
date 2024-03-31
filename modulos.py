@@ -2,84 +2,38 @@ from interface_grafica import *
 import sqlite3
 
 # INSERIR VENDAS
-def inserir_db(idproduto, data, hora, valor, modopag, produto, cliente, usuario):
+def inserir_venda(idproduto, data, hora, valor, modopag, produto, cliente, usuario):
     banco = sqlite3.connect('acai_database.db')
     cursor = banco.cursor()
     cursor.execute("INSERT INTO VENDAS VALUES ('"+str(idproduto)+"', '"+str(data)+"', '"+str(hora)+"', '"+str(modopag)+"', '"+str(round(valor, 2))+"', '"+str(cliente.upper())+"', '"+str(usuario)+"')")
     banco.commit()
     sg.popup(f'FORMA DE PAGAMENTO {modopag} REFERENTE A VENDA DE {produto}, REGISTRADA COM SUCESSO!', font='Arial 15 bold', title='INFO')
 
-# INSERIR PRODUTOS NO TABELA DE CONTROLE DE ESTOQUE
-def inserir_frutas(fruta, quantidade, valor):
+# INSERIR ITEM NA TABELA DE CONTROLE DE ESTOQUE
+def inserir_item(tabela, coluna, item, quantidade, valor):
     banco = sqlite3.connect('acai_database.db')
     cursor = banco.cursor()
-    cursor.execute('CREATE TABLE IF NOT EXISTS FRUTAS (FRUTA text, QUANTIDADE integer, VALOR integer)')
+    cursor.execute('CREATE TABLE IF NOT EXISTS {} ({} text, QUANTIDADE integer, VALOR integer)'.format(tabela, coluna))
     banco.commit()
-    cursor.execute("INSERT INTO FRUTAS VALUES('"+str(fruta)+"', '"+str(quantidade)+"', '"+str(valor)+"')")
-    banco.commit()
-
-def inserir_utilidades(utilidade, quantidade, valor):
-    banco = sqlite3.connect('acai_database.db')
-    cursor = banco.cursor()
-    cursor.execute('CREATE TABLE IF NOT EXISTS UTILIDADES (UTILIDADE text, QUANTIDADE integer, VALOR integer)')
-    banco.commit()
-    cursor.execute("INSERT INTO UTILIDADES VALUES ('"+str(utilidade)+"', '"+str(quantidade)+"', '"+str(valor)+"')")
-    banco.commit()
-
-def inserir_gelatos(gelato, quantidade, valor):
-    banco = sqlite3.connect('acai_database.db')
-    cursor = banco.cursor()
-    cursor.execute('CREATE TABLE IF NOT EXISTS GELATOS (GELATO text, QUANTIDADE integer, VALOR integer)')
-    banco.commit()
-    cursor.execute("INSERT INTO GELATOS VALUES('"+str(gelato)+"', '"+str(quantidade)+"', '"+str(valor)+"')")
+    cursor.execute(f'INSERT INTO "'+str(tabela)+'" VALUES("'+str(item)+'", "'+str(quantidade)+'", "'+str(valor)+'")')
     banco.commit()
 
 # RELATÓRIOS DE CONTROLE DE ESTOQUE
-def ver_gelatos():
+def ver_itens(coluna, tabela):
     banco = sqlite3.connect('acai_database.db')
     cursor = banco.cursor()
-    cursor.execute('SELECT ROWID, GELATO, QUANTIDADE, VALOR FROM GELATOS')
-    gelatos = cursor.fetchall()
-    for gelato in gelatos:
-        print(f'ID: {gelato[0]}, Produto: {gelato[1]}, Quantidade: {gelato[2]}, Investimento: {gelato[3]}.')
+    cursor.execute('SELECT ROWID, {}, QUANTIDADE, VALOR FROM {}'.format(coluna, tabela))
+    itens = cursor.fetchall()
+    for item in itens:
+        print(f'ID: {item[0]}, Produto: {item[1]}, Quantidade: {item[2]}, Investimento: {item[3]}.')
 
-    cursor.execute('SELECT VALOR FROM GELATOS')
-    resgelatos = cursor.fetchall()
-    somagelatos = 0
-    for i in resgelatos:
-        somagelatos = somagelatos + i[0]
-    print(f'\nVALOR TOTAL DO INVESTIMENTO: {somagelatos}')
+    cursor.execute('SELECT VALOR FROM {}'.format(tabela))
+    valor_itens = cursor.fetchall()
+    somaitens = 0
+    for v_i in valor_itens:
+        somaitens = somaitens + v_i[0]
+    print(f'\nVALOR TOTAL DO INVESTIMENTO: {somaitens}')
         
-def ver_utilidades():
-    banco = sqlite3.connect('acai_database.db')
-    cursor = banco.cursor()
-    cursor.execute('SELECT ROWID, UTILIDADE, QUANTIDADE, VALOR FROM UTILIDADES')
-    utilidades = cursor.fetchall()
-    for utilidade in utilidades:
-        print(f'ID: {utilidade[0]}, Utilidade: {utilidade[1]}, Quantidade: {utilidade[2]}, Investimento: {utilidade[3]}.')
-
-    cursor.execute('SELECT VALOR FROM UTILIDADES')
-    resutilidades = cursor.fetchall()
-    somautilidades = 0
-    for i in resutilidades:
-        somautilidades = somautilidades + i[0]
-    print(f'\nVALOR TOTAL DO INVESTIMENTO: {somautilidades}')
-
-def ver_frutas():
-    banco = sqlite3.connect('acai_database.db')
-    cursor = banco.cursor()
-    cursor.execute('SELECT ROWID, FRUTA, QUANTIDADE, VALOR FROM FRUTAS')
-    frutas = cursor.fetchall()
-    for fruta in frutas:
-        print(f'ID: {fruta[0]}, Fruta: {fruta[1]}, Quantidade: {fruta[2]}, Investimento: {fruta[3]}.')
-
-    cursor.execute('SELECT VALOR FROM FRUTAS')
-    resfrutas = cursor.fetchall()
-    somafrutas = 0
-    for i in resfrutas:
-        somafrutas = somafrutas + i[0]
-    print(f'\nVALOR TOTAL DO INVESTIMENTO: {somafrutas}')
-
 # RELATÓRIOS DE VENDAS
 def relatorio_completo():
     banco = sqlite3.connect('acai_database.db')
@@ -143,18 +97,26 @@ def conexao_db():
     VERIFICAR A POSSIBILIDADE DE ALTERAR ATRAVES DO .FORMAT AS REFERENCIAS DA COLUNA E DA TABELA DO BANCO DE DADOS
                 26/03/2024 ~verificado a possibilidade e o codigo segue funcionando corretamente e eliminado dois blocos de códigos repetidos.
 """
-def del_item(coluna, tabela, id, produto):
+def remover_item(coluna, tabela, id, item):
     banco = sqlite3.connect('acai_database.db')
     cursor = banco.cursor()
 
     cursor.execute('SELECT ROWID, {} FROM {}'.format(coluna, tabela))
-    gall = cursor.fetchall()
-    if not gall:
-        sg.popup('GELATO NÃO ENCONTRADO.', font='Arial 13 bold', title='INFORMAÇÃO')
-    for g in gall:
-        if g[0] == int(id) and g[1] == produto:
-            cursor.execute('DELETE FROM GELATOS WHERE ROWID = {}'.format(int(id)))
-            banco.commit()
-            sg.popup(f'Removido com sucesso: {produto}', font='Arial 13 bold', title='INFORMAÇÃO')
+    itens = cursor.fetchall()
+
+    # Campo Em Branco -> Erro será sinalizado!
+    if not itens: 
+        sg.popup('{} NÃO ENCONTRADO(A).'.format(coluna), font='Arial 13 bold', title='INFORMAÇÃO')
+    try:
+        for i in itens:
+            if i[0] == int(id) and i[1] == item:
+                cursor.execute('DELETE FROM {} WHERE ROWID = {}'.format(tabela, int(id)))
+                banco.commit()
+                sg.popup(f'Removido com sucesso: {item}', font='Arial 13 bold', title='INFORMAÇÃO')
         else:
-            sg.popup('NÃO ENCONTRADO, FAVOR VERIFICAR', font='Arial 13 bold', title='INFORMAÇÃO')
+            sg.popup('{} NÃO ENCONTRADO(A).'.format(coluna), font='Arial 13 bold', title='INFORMAÇÃO')
+
+    except:
+        sg.popup(f'{item}, com id: {id}, não localizado.', font='Arial 13 bold', title='INFORMAÇÃO')
+    finally:
+        pass
