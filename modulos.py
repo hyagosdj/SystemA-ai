@@ -1,4 +1,4 @@
-from interface_grafica import *
+from interface_grafica import *  # noqa: F403
 import sqlite3
 
 # INSERIR VENDAS
@@ -7,7 +7,8 @@ def inserir_venda(idproduto, data, hora, valor, modopag, produto, cliente, usuar
     cursor = banco.cursor()
     cursor.execute("INSERT INTO VENDAS VALUES ('"+str(idproduto)+"', '"+str(data)+"', '"+str(hora)+"', '"+str(modopag)+"', '"+str(round(valor, 2))+"', '"+str(cliente.upper())+"', '"+str(usuario)+"')")
     banco.commit()
-    sg.popup(f'FORMA DE PAGAMENTO {modopag} REFERENTE A VENDA DE {produto}, REGISTRADA COM SUCESSO!', font='Arial 15 bold', title='INFO')
+    sg.popup(f'FORMA DE PAGAMENTO {modopag} REFERENTE A VENDA DE {produto}, REGISTRADA COM SUCESSO!',  # noqa: F405
+             font='Arial 15 bold', title='INFO')
 
 # INSERIR ITEM NA TABELA DE CONTROLE DE ESTOQUE
 def inserir_item(tabela, coluna, item, quantidade, valor):
@@ -15,7 +16,7 @@ def inserir_item(tabela, coluna, item, quantidade, valor):
     cursor = banco.cursor()
     cursor.execute('CREATE TABLE IF NOT EXISTS {} ({} text, QUANTIDADE integer, VALOR integer)'.format(tabela, coluna))
     banco.commit()
-    cursor.execute(f'INSERT INTO "'+str(tabela)+'" VALUES("'+str(item)+'", "'+str(quantidade)+'", "'+str(valor)+'")')
+    cursor.execute('INSERT INTO "'+str(tabela)+'" VALUES("'+str(item)+'", "'+str(quantidade)+'", "'+str(valor)+'")')  #  FIXME: check f-string initial sentence, if exist error.
     banco.commit()
 
 # RELATÓRIOS DE CONTROLE DE ESTOQUE
@@ -85,17 +86,16 @@ def relatorio_sorvete():
         somavs = somavs + sorvete[0]
     print(f'O VALOR TOTAL DE VENDAS É R${round(somavs, 2)}')
 
-
 def conexao_db():
     banco = sqlite3.connect('acai_database.db')
     cursor = banco.cursor()
 
 """
-    MÉTODOS NÃO UTILIZADOS ATÉ O MOMENTO
-    TESTAR A FUNCIONALIDADE NO CÓDIGO FONTE DANDO PREFERENCIA PARA AS VERIFICAÇÕES.
-                26/03/2024 ~feita a integração dos Métodos dentro do Código Fonte. FUNCIONANDO CORRETAMENTE
-    VERIFICAR A POSSIBILIDADE DE ALTERAR ATRAVES DO .FORMAT AS REFERENCIAS DA COLUNA E DA TABELA DO BANCO DE DADOS
-                26/03/2024 ~verificado a possibilidade e o codigo segue funcionando corretamente e eliminado dois blocos de códigos repetidos.
+MÉTODOS NÃO UTILIZADOS ATÉ O MOMENTO
+TESTAR A FUNCIONALIDADE NO CÓDIGO FONTE DANDO PREFERENCIA PARA AS VERIFICAÇÕES.
+            26/03/2024 ~feita a integração dos Métodos dentro do Código Fonte. FUNCIONANDO CORRETAMENTE
+VERIFICAR A POSSIBILIDADE DE ALTERAR ATRAVES DO .FORMAT AS REFERENCIAS DA COLUNA E DA TABELA DO BANCO DE DADOS
+            26/03/2024 ~verificado a possibilidade e o codigo segue funcionando corretamente e eliminado dois blocos de códigos repetidos.
 """
 def remover_item(coluna, tabela, id, item):
     banco = sqlite3.connect('acai_database.db')
@@ -120,3 +120,18 @@ def remover_item(coluna, tabela, id, item):
         sg.popup(f'{item}, com id: {id}, não localizado.', font='Arial 13 bold', title='INFORMAÇÃO')
     finally:
         pass
+
+def exibir_informacao():
+    print('*' * 110)
+    print("""Este sistema é destinado ao gerenciamento de vendas para empresa de Gelatos
+                                            Criado por Hyago Wendel™\n
+        Para abrir este programa você clicará duas vezes sobre o ícone.\n
+        Após aberta será necessário uma verificação de senha para acessar \ncorretamente suas funções.\n
+        Os dados ali inclusos serão de total responsabilidade do caixa.\n
+        Após verificado e autenticado o acesso, o sistema abrirá normalmente.\n
+        Neste terá o campo que se refere aos produtos, as gramas e o valor pago pelo cliente.\n
+        Após preenchido os dados referente aos mesmos, ao lado aparecerá a \ncomanda totalmente preenchida.\n
+        Ao na coluna esquerda, você perceberá 4 botões referentes a forma de \npagamento do pedido.\n
+        Lembre-se que ao pressionar aparecerá uma janela informando o sucesso \nda inclusão em seu relatório de vendas.""")
+    print('*' * 110)
+    return
